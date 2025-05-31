@@ -2,22 +2,48 @@
 
 import { useState } from 'react';
 import { Page } from '@/components/PageLayout';
+import { MiniKit } from '@worldcoin/minikit-js';
+import TestContractABI from '@/abi/TestContract.json';
 
 export default function Portal() {
   const [balance, setBalance] = useState<number>(300);
   const [showWithdraw, setShowWithdraw] = useState(false);
   const [amount, setAmount] = useState('');
+  const [isTransactionPending, setIsTransactionPending] = useState(false);
 
-  const handleConfirm = () => {
+  const handleConfirm = async () => {
     const value = parseFloat(amount);
     if (!isNaN(value) && value > 0 && value <= balance) {
-      setBalance(prev => +(prev - value).toFixed(2));
+      setIsTransactionPending(true);
+      try {
+        const { finalPayload } = await MiniKit.commandsAsync.sendTransaction({
+          transaction: [
+            {
+              address: '0xF0882554ee924278806d708396F1a7975b732522',
+              abi: TestContractABI,
+              functionName: 'mintToken',
+              args: [1],
+            },
+          ],
+        });
+
+        console.log('Transacción enviada:', finalPayload);
+
+        if (finalPayload.status === 'success') {
+          setBalance(prev => +(prev - value).toFixed(2));
+          setAmount('');
+          setShowWithdraw(false);
+        }
+      } catch (error) {
+        console.error('Error al enviar la transacción:', error);
+      } finally {
+        setIsTransactionPending(false);
+      }
     }
-    setAmount('');
-    setShowWithdraw(false);
   };
 
-  const BTN_SOLID = 'w-full bg-black text-[#ffffff] text-center font-bold text-sm px-4 py-2.5 rounded-full shadow transition-colors';
+  const BTN_SOLID =
+    'w-full bg-black text-[#ffffff] text-center font-bold text-sm px-4 py-2.5 rounded-full shadow transition-colors';
 
   return (
     <Page.Main className="min-h-screen flex flex-col items-center px-4 py-5 gap-4 bg-orange-200">
@@ -30,7 +56,11 @@ export default function Portal() {
         </div>
 
         {!showWithdraw && (
-          <button onClick={() => setShowWithdraw(true)} className={BTN_SOLID}>
+          <button
+            onClick={() => setShowWithdraw(true)}
+            className={BTN_SOLID}
+            disabled={isTransactionPending}
+          >
             Withdraw
           </button>
         )}
@@ -45,14 +75,23 @@ export default function Portal() {
               onChange={e => setAmount(e.target.value)}
               placeholder="Amount to withdraw"
               className="w-full p-2 rounded border border-gray-300 text-sm"
+              disabled={isTransactionPending}
             />
             <div className="flex gap-2">
-              <button onClick={handleConfirm} className={BTN_SOLID}>
-                Confirm
+              <button
+                onClick={handleConfirm}
+                className={BTN_SOLID}
+                disabled={isTransactionPending}
+              >
+                {isTransactionPending ? 'Processing...' : 'Confirm'}
               </button>
               <button
-                onClick={() => { setAmount(''); setShowWithdraw(false); }}
+                onClick={() => {
+                  setAmount('');
+                  setShowWithdraw(false);
+                }}
                 className="flex-1 border border-black text-black font-bold text-sm px-4 py-2.5 rounded-full shadow transition-colors"
+                disabled={isTransactionPending}
               >
                 Cancel
               </button>
@@ -71,21 +110,50 @@ export default function Portal() {
             alert('Report submitted (demo)');
           }}
         >
-          <input type="text" placeholder="Event Name" required className="p-2 rounded border border-gray-300" />
-          <input type="date" required className="p-2 rounded border border-gray-300" />
-          <input type="text" placeholder="Place" required className="p-2 rounded border border-gray-300" />
-          <textarea placeholder="Brief Description" rows={2} className="p-2 rounded border border-gray-300" />
-          <input type="number" min="0" placeholder="Estimated Attendees" className="p-2 rounded border border-gray-300" />
-          <textarea placeholder="Links (one per line)" rows={2} className="p-2 rounded border border-gray-300" />
-
+          <input
+            type="text"
+            placeholder="Event Name"
+            required
+            className="p-2 rounded border border-gray-300"
+          />
+          <input
+            type="date"
+            required
+            className="p-2 rounded border border-gray-300"
+          />
+          <input
+            type="text"
+            placeholder="Place"
+            required
+            className="p-2 rounded border border-gray-300"
+          />
+          <textarea
+            placeholder="Brief Description"
+            rows={2}
+            className="p-2 rounded border border-gray-300"
+          />
+          <input
+            type="number"
+            min="0"
+            placeholder="Estimated Attendees"
+            className="p-2 rounded border border-gray-300"
+          />
+          <textarea
+            placeholder="Links (one per line)"
+            rows={2}
+            className="p-2 rounded border border-gray-300"
+          />
           <label className="text-gray-600">Upload Photos</label>
           <input type="file" multiple className="text-xs" />
-
           <label className="text-gray-600">Expense Receipts</label>
           <input type="file" multiple className="text-xs" />
-
-          <input type="number" step="0.01" min="0" placeholder="Total Expenses (USDC)" className="p-2 rounded border border-gray-300" />
-
+          <input
+            type="number"
+            step="0.01"
+            min="0"
+            placeholder="Total Expenses (USDC)"
+            className="p-2 rounded border border-gray-300"
+          />
           <button type="submit" className={BTN_SOLID}>
             Submit Report
           </button>
