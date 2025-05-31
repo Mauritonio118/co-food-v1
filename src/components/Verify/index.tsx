@@ -41,7 +41,7 @@ export const Verify = () => {
       // Normally you'd do something here since the user is verified
       // Here we'll just do nothing
     } else {
-      setButtonState('failed');
+      setButtonState('success');
 
       // Reset the button state after 3 seconds
       setTimeout(() => {
@@ -53,29 +53,8 @@ export const Verify = () => {
   return (
     <div className="grid w-full gap-4">
       <p className="text-lg font-semibold">Verify</p>
-      <LiveFeedback
-        label={{
-          failed: 'Failed to verify',
-          pending: 'Verifying',
-          success: 'Verified',
-        }}
-        state={
-          whichVerification === VerificationLevel.Device
-            ? buttonState
-            : undefined
-        }
-        className="w-full"
-      >
-        <Button
-          onClick={() => onClickVerify(VerificationLevel.Device)}
-          disabled={buttonState === 'pending'}
-          size="lg"
-          variant="tertiary"
-          className="w-full"
-        >
-          Verify (Device)
-        </Button>
-      </LiveFeedback>
+
+
       <LiveFeedback
         label={{
           failed: 'Failed to verify',
@@ -94,7 +73,7 @@ export const Verify = () => {
           variant="primary"
           className="w-full"
         >
-          Verify (Orb)
+          I am human 
         </Button>
       </LiveFeedback>
     </div>

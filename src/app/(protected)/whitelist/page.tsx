@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { Page } from '@/components/PageLayout';
 import { useRouter } from 'next/navigation';
 import { Verify } from '@/components/Verify';
+import Link from 'next/link';
 
 export default function WhitelistForm() {
   const router = useRouter();
@@ -11,15 +12,15 @@ export default function WhitelistForm() {
 
   return (
     <>
-      <Page.Main className="min-h-screen bg-orange-200 flex flex-col items-center px-4 py-6">
-        <div className="w-full max-w-sm bg-white rounded-xl shadow p-4 space-y-4 border border-orange-300">
+      <Page.Main className="min-h-screen flex flex-col items-center px-4 py-6 gap-4 text-center bg-orange-200">
+        <div className="w-full max-w-sm bg-white rounded-xl shadow p-5 space-y-3 border border-orange-300">
           <h1 className="text-xl font-bold text-gray-800 text-center">Whitelist Application</h1>
 
           <form
             className="flex flex-col space-y-3 text-sm text-gray-700"
             onSubmit={(e) => {
               e.preventDefault();
-              router.push('/thank-you'); // puedes cambiar este path
+              router.push('/thank-you');
             }}
           >
             <input
@@ -61,22 +62,25 @@ export default function WhitelistForm() {
             />
             <label className="flex items-center gap-2">
               <input type="checkbox" required />
-              I accept the terms and conditions
+              <span>I accept the terms and conditions</span>
             </label>
 
             <Verify />
 
-            <button
-              type="submit"
-              disabled={!verified}
-              className="w-full bg-black text-white py-2 rounded-full font-semibold text-sm transition hover:opacity-90"
-            >
-              Submit Application
-            </button>
+
+            <div className="pt-2">
+              <button
+                type="button"
+                onClick={() => router.push('/portal')}
+                className="block w-full bg-green text-[#ffffff] text-center font-bold text-sm px-4 py-2.5 rounded-full shadow hover:opacity-90 transition"
+              >
+                Submit
+              </button>
+            </div>
+
           </form>
         </div>
       </Page.Main>
     </>
   );
 }
-
