@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { Page } from '@/components/PageLayout';
 import { useRouter } from 'next/navigation';
+import { Verify } from '@/components/Verify';
 
 export default function WhitelistForm() {
   const router = useRouter();
@@ -63,18 +64,7 @@ export default function WhitelistForm() {
               I accept the terms and conditions
             </label>
 
-            <button
-              type="button"
-              onClick={() => setVerified(true)}
-              disabled={verified}
-              className={`w-full py-2 rounded-full font-semibold border-2 text-sm transition ${
-                verified
-                  ? 'border-green-600 text-green-700 bg-white'
-                  : 'border-black text-black bg-white hover:bg-gray-100'
-              }`}
-            >
-              {verified ? 'Verified ✅' : 'Verify'}
-            </button>
+            <Verify />
 
             <button
               type="submit"
