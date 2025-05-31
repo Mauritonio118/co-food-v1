@@ -33,10 +33,10 @@ export default function ClientProviders({
   session,
 }: ClientProvidersProps) {
   return (
-    <ErudaProvider>
+  //  <ErudaProvider>
       <MiniKitProvider>
         <SessionProvider session={session}>{children}</SessionProvider>
       </MiniKitProvider>
-    </ErudaProvider>
+  //  </ErudaProvider>
   );
 }
