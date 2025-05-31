@@ -1,30 +1,33 @@
-# CoFood-v1
+## Create a Mini App
 
-*Automatically synced with your [v0.dev](https://v0.dev) deployments*
+[Mini apps](https://docs.worldcoin.org/mini-apps) enable third-party developers to create native-like applications within World App.
 
-[![Deployed on Vercel](https://img.shields.io/badge/Deployed%20on-Vercel-black?style=for-the-badge&logo=vercel)](https://vercel.com/mauros-projects-0144866f/v0-co-food-v1)
-[![Built with v0](https://img.shields.io/badge/Built%20with-v0.dev-black?style=for-the-badge)](https://v0.dev/chat/projects/kM96tN3yYOI)
+This template is a way for you to quickly get started with authentication and examples of some of the trickier commands.
 
-## Overview
+## Getting Started
 
-This repository will stay in sync with your deployed chats on [v0.dev](https://v0.dev).
-Any changes you make to your deployed app will be automatically pushed to this repository from [v0.dev](https://v0.dev).
+1. cp .env.example .env.local
+2. Follow the instructions in the .env.local file
+3. Run `npm run dev`
+4. Run `ngrok http 3000`
+5. Run `npx auth secret` to update the `AUTH_SECRET` in the .env.local file
+6. Add your domain to the `allowedDevOrigins` in the next.config.ts file.
+7. [For Testing] If you're using a proxy like ngrok, you need to update the `AUTH_URL` in the .env.local file to your ngrok url.
+8. Continue to developer.worldcoin.org and make sure your app is connected to the right ngrok url
+9. [Optional] For Verify and Send Transaction to work you need to do some more setup in the dev portal. The steps are outlined in the respective component files.
 
-## Deployment
+## Authentication
 
-Your project is live at:
+This starter kit uses [Minikit's](https://github.com/worldcoin/minikit-js) wallet auth to authenticate users, and [next-auth](https://authjs.dev/getting-started) to manage sessions.
 
-**[https://vercel.com/mauros-projects-0144866f/v0-co-food-v1](https://vercel.com/mauros-projects-0144866f/v0-co-food-v1)**
+## UI Library
 
-## Build your app
+This starter kit uses [Mini Apps UI Kit](https://github.com/worldcoin/mini-apps-ui-kit) to style the app. We recommend using the UI kit to make sure you are compliant with [World App's design system](https://docs.world.org/mini-apps/design/app-guidelines).
 
-Continue building your app on:
+## Eruda
 
-**[https://v0.dev/chat/projects/kM96tN3yYOI](https://v0.dev/chat/projects/kM96tN3yYOI)**
+[Eruda](https://github.com/liriliri/eruda) is a tool that allows you to inspect the console while building as a mini app. You should disable this in production.
 
-## How It Works
+## Contributing
 
-1. Create and modify your project using [v0.dev](https://v0.dev)
-2. Deploy your chats from the v0 interface
-3. Changes are automatically pushed to this repository
-4. Vercel deploys the latest version from this repository
+This template was made with help from the amazing [supercorp-ai](https://github.com/supercorp-ai) team.
